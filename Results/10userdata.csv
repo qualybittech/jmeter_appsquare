@@ -1,0 +1,14 @@
+Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
+Thread Group:Transaction - Register,10,9004,8370,11824,11824,13401,5934,13401,0.000%,.67485,17.61,0.97
+Thread Group:Transaction - Login,10,25563,25426,27224,27224,27248,23324,27248,100.000%,.29264,24.11,2.42
+Thread Group:Transaction - Welcome,10,14864,15007,15662,15662,16793,12241,16793,0.000%,.42470,28.99,1.82
+Thread Group:Transaction - Analytics,10,8084,8075,9455,9455,10325,6146,10325,0.000%,.47148,31.56,1.07
+Thread Group:Transaction - Appstracker,10,5448,4958,7127,7127,7654,4477,7654,0.000%,.51536,36.43,1.13
+Thread Group:Transaction - Discover-new-apps,10,7277,6998,9444,9444,9582,4633,9582,0.000%,.46049,33.45,1.01
+Thread Group:Transaction - Dashboard,10,16002,15446,18261,18261,18444,14546,18444,0.000%,.30377,23.77,1.45
+Thread Group:admin-ajax/disable_walkthrough_session,10,5204,4609,6835,6835,7127,4063,7127,0.000%,.56513,0.34,1.46
+Thread Group:admin-ajax/pafe_ajax_form_builder,10,5997,5732,6773,6773,7850,4873,7850,0.000%,.52032,0.37,1.79
+Thread Group:Home,10,10920,10910,11513,11513,12446,9484,12446,0.000%,.43418,33.88,1.90
+Thread Group:admin-ajax/load_BrandRssFeed_modal,9,5352,5971,6562,7247,7247,3285,7247,0.000%,.70956,0.45,1.82
+Thread Group:admin-ajax/load_GlobalRssFeed_modal,3,5600,4545,7895,7895,7895,4360,7895,0.000%,.33322,0.73,0.84
+TOTAL,112,10255,7850,18261,24972,27224,3285,27248,8.929%,.90520,44.11,3.14

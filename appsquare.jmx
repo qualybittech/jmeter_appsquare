@@ -12,16 +12,16 @@
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">20</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">360</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
@@ -66,11 +66,276 @@
             <hashTree/>
           </hashTree>
         </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Register" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Generate Data and Write to CSV" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">//To generate Firstname, Lastname, Email and store it in CSV File
+
+import java.util.Random;
+import org.apache.jmeter.threads.JMeterVariables;
+import org.apache.jmeter.services.FileServer;
+ 
+//get path of current jmeter&apos;s script
+String projectPath = FileServer.getFileServer().getBaseDir();
+ 
+// Define the characters for the random string
+String chars = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+String emailChars = &quot;abcdefghijklmnopqrstuvwxyz1234567890&quot;;
+
+Random random = new Random();
+
+// Define the list of valid names
+String[] names = {&quot;John&quot;, &quot;Jane&quot;, &quot;Bob&quot;, &quot;Alice&quot;, &quot;Charlie&quot;, &quot;David&quot;, &quot;Eve&quot;, &quot;Frank&quot;, &quot;Grace&quot;, &quot;Helen&quot;,
+&quot;Igor&quot;, &quot;Julia&quot;, &quot;Kyle&quot;, &quot;Laura&quot;, &quot;Mike&quot;, &quot;Nina&quot;, &quot;Oscar&quot;, &quot;Paula&quot;, &quot;Quincy&quot;, &quot;Rachel&quot;, &quot;Steve&quot;, &quot;Tina&quot;, &quot;Ursula&quot;, &quot;Victor&quot;, &quot;Wendy&quot;, &quot;Xavier&quot;, &quot;Yvonne&quot;, &quot;Zack&quot;,&quot;James&quot;,&quot;Michael&quot;,&quot;Robert&quot;,&quot;John&quot;,&quot;David&quot;,&quot;William&quot;,&quot;Richard&quot;,&quot;Joseph&quot;,&quot;Thomas&quot;,&quot;Christopher&quot;,&quot;Charles&quot;,&quot;Daniel&quot;,&quot;Matthew&quot;,&quot;Anthony&quot;,&quot;Mark&quot;,&quot;Donald&quot;,&quot;Steven&quot;,&quot;Andrew&quot;,&quot;Paul&quot;,&quot;Joshua&quot;,&quot;Kenneth&quot;,&quot;Kevin&quot;,&quot;Brian&quot;,&quot;Timothy&quot;,&quot;Ronald&quot;,&quot;George&quot;,&quot;Jason&quot;,&quot;Edward&quot;,&quot;Jeffrey&quot;,&quot;Ryan&quot;,&quot;Jacob&quot;,&quot;Nicholas&quot;,&quot;Gary&quot;,&quot;Eric&quot;,&quot;Jonathan&quot;,&quot;Stephen&quot;,&quot;Larry&quot;,&quot;Justin&quot;,&quot;Scott&quot;,&quot;Brandon&quot;,&quot;Benjamin&quot;,&quot;Samuel&quot;,&quot;Gregory&quot;,&quot;Alexander&quot;,&quot;Patrick&quot;,&quot;Frank&quot;,&quot;Raymond&quot;,&quot;Jack&quot;,&quot;Dennis&quot;,&quot;Jerry&quot;,&quot;Tyler&quot;,&quot;Aaron&quot;,&quot;Jose&quot;,&quot;Adam&quot;,&quot;Nathan&quot;,&quot;Henry&quot;,&quot;Zachary&quot;,&quot;Douglas&quot;,&quot;Peter&quot;,&quot;Kyle&quot;,&quot;Noah&quot;,&quot;Ethan&quot;,&quot;Jeremy&quot;,&quot;Christian&quot;,&quot;Walter&quot;,&quot;Keith&quot;,&quot;Austin&quot;,&quot;Roger&quot;,&quot;Terry&quot;,&quot;Sean&quot;,&quot;Gerald&quot;,&quot;Carl&quot;,&quot;Dylan&quot;,&quot;Harold&quot;,&quot;Jordan&quot;,&quot;Jesse&quot;,&quot;Bryan&quot;,&quot;Lawrence&quot;,&quot;Arthur&quot;,&quot;Gabriel&quot;,&quot;Bruce&quot;,&quot;Logan&quot;,&quot;Billy&quot;,&quot;Joe&quot;,&quot;Alan&quot;,&quot;Juan&quot;,&quot;Elijah&quot;,&quot;Willie&quot;,&quot;Albert&quot;,&quot;Wayne&quot;,&quot;Randy&quot;,&quot;Mason&quot;,&quot;Vincent&quot;,&quot;Liam&quot;,&quot;Roy&quot;,&quot;Bobby&quot;,&quot;Caleb&quot;,&quot;Bradley&quot;,&quot;Russell&quot;,&quot;Lucas&quot;,&quot;Mary&quot;,&quot;Patricia&quot;,&quot;Jennifer&quot;,&quot;Linda&quot;,&quot;Elizabeth&quot;,&quot;Barbara&quot;,&quot;Susan&quot;,&quot;Jessica&quot;,&quot;Karen&quot;,&quot;Sarah&quot;,&quot;Lisa&quot;,&quot;Nancy&quot;,&quot;Sandra&quot;,&quot;Betty&quot;,&quot;Ashley&quot;,&quot;Emily&quot;,&quot;Kimberly&quot;,&quot;Margaret&quot;,&quot;Donna&quot;,&quot;Michelle&quot;,&quot;Carol&quot;,&quot;Amanda&quot;,&quot;Melissa&quot;,&quot;Deborah&quot;,&quot;Stephanie&quot;,&quot;Rebecca&quot;,&quot;Sharon&quot;,&quot;Laura&quot;,&quot;Cynthia&quot;,&quot;Dorothy&quot;,&quot;Amy&quot;,&quot;Kathleen&quot;,&quot;Angela&quot;,&quot;Shirley&quot;,&quot;Emma&quot;,&quot;Brenda&quot;,&quot;Pamela&quot;,&quot;Nicole&quot;,&quot;Anna&quot;,&quot;Samantha&quot;,&quot;Katherine&quot;,&quot;Christine&quot;,&quot;Debra&quot;,&quot;Rachel&quot;,&quot;Carolyn&quot;,&quot;Janet&quot;,&quot;Maria&quot;,&quot;Olivia&quot;,&quot;Heather&quot;,&quot;Helen&quot;,&quot;Catherine&quot;,&quot;Diane&quot;,&quot;Julie&quot;,&quot;Victoria&quot;,&quot;Joyce&quot;,&quot;Lauren&quot;,&quot;Kelly&quot;,&quot;Christina&quot;,&quot;Ruth&quot;,&quot;Joan&quot;,&quot;Virginia&quot;,&quot;Judith&quot;,&quot;Evelyn&quot;,&quot;Hannah&quot;,&quot;Andrea&quot;,&quot;Megan&quot;,&quot;Cheryl&quot;,&quot;Jacqueline&quot;,&quot;Madison&quot;,&quot;Teresa&quot;,&quot;Abigail&quot;,&quot;Sophia&quot;,&quot;Martha&quot;,&quot;Sara&quot;,&quot;Gloria&quot;,&quot;Janice&quot;,&quot;Kathryn&quot;,&quot;Ann&quot;,&quot;Isabella&quot;,&quot;Judy&quot;,&quot;Charlotte&quot;,&quot;Julia&quot;,&quot;Grace&quot;,&quot;Amber&quot;,&quot;Alice&quot;,&quot;Jean&quot;,&quot;Denise&quot;,&quot;Frances&quot;,&quot;Danielle&quot;,&quot;Marilyn&quot;,&quot;Natalie&quot;,&quot;Beverly&quot;,&quot;Diana&quot;,&quot;Brittany&quot;,&quot;Theresa&quot;,&quot;Kayla&quot;,&quot;Alexis&quot;,&quot;Doris&quot;,&quot;Lori&quot;,&quot;Tiffany&quot;};
+
+// Generate a random first name and last name from the list
+String firstName = names[random.nextInt(names.length)];
+String lastName = names[random.nextInt(names.length)];
+
+// Generate a random email
+StringBuilder email = new StringBuilder(10);
+email.append(firstName+&quot;.&quot;);
+email.append(lastName+&quot;.&quot;);
+for (int i = 0; i &lt; 10; i++) {
+    email.append(emailChars.charAt(random.nextInt(emailChars.length())));
+}
+email.append(&quot;@psycray.net&quot;);
+
+// Print the generated names and email
+log.info(&quot;First Name: &quot; + firstName.toString());
+log.info(&quot;Last Name: &quot; + lastName.toString());
+log.info(&quot;Email: &quot; + email.toString());
+
+// Store values in the variables
+vars.put(&quot;FirstName&quot;, firstName.toString());
+vars.put(&quot;LastName&quot;, lastName.toString());
+vars.put(&quot;Email&quot;, email.toString());
+vars.put(&quot;Password&quot;, &quot;Password123&quot;);
+
+
+FileWriter f = new FileWriter(projectPath+&quot;./accountscreated.csv&quot;,true);
+BufferedWriter out = new BufferedWriter(f);
+out.write(vars.get(&quot;FirstName&quot;)+&quot;,&quot;+vars.get(&quot;LastName&quot;)+&quot;,&quot;+vars.get(&quot;Email&quot;)+&quot;,&quot;+vars.get(&quot;Password&quot;)+ &quot;\n&quot;);
+out.close();
+f.close();</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="channelpartner/par" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="input_1.3" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${FirstName}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_1.3</stringProp>
+                </elementProp>
+                <elementProp name="input_2.6" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${LastName}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_2.6</stringProp>
+                </elementProp>
+                <elementProp name="input_3" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${Email}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_3</stringProp>
+                </elementProp>
+                <elementProp name="input_4" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${Password}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_4</stringProp>
+                </elementProp>
+                <elementProp name="input_4_2" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${Password}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_4_2</stringProp>
+                </elementProp>
+                <elementProp name="input_9" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">50127</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_9</stringProp>
+                </elementProp>
+                <elementProp name="input_10" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">sqs_premium</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_10</stringProp>
+                </elementProp>
+                <elementProp name="gform_ajax" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">form_id=11&amp;title=&amp;description=yes&amp;tabindex=0</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">gform_ajax</stringProp>
+                </elementProp>
+                <elementProp name="is_submit_11" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">is_submit_11</stringProp>
+                </elementProp>
+                <elementProp name="gform_submit" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">11</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">gform_submit</stringProp>
+                </elementProp>
+                <elementProp name="gform_unique_id" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">gform_unique_id</stringProp>
+                </elementProp>
+                <elementProp name="state_21" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">WyJbXSIsIjRiMDk4ZjFmZTYyMmIwNTdlNzc1ZWM0MzBiZGEzOGVjIl0=</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">state_21</stringProp>
+                </elementProp>
+                <elementProp name="gform_target_page_number_11" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">0</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">gform_target_page_number_11</stringProp>
+                </elementProp>
+                <elementProp name="gform_source_page_number_11" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">gform_source_page_number_11</stringProp>
+                </elementProp>
+                <elementProp name="gform_field_values" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">gform_field_values</stringProp>
+                </elementProp>
+                <elementProp name="input_17" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_17</stringProp>
+                </elementProp>
+                <elementProp name="input_18" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_18</stringProp>
+                </elementProp>
+                <elementProp name="input_19" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_19</stringProp>
+                </elementProp>
+                <elementProp name="input_20" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_20</stringProp>
+                </elementProp>
+                <elementProp name="input_21" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_21</stringProp>
+                </elementProp>
+                <elementProp name="input_22" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_22</stringProp>
+                </elementProp>
+                <elementProp name="input_24" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">62711</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_24</stringProp>
+                </elementProp>
+                <elementProp name="input_25" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value"></stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">input_25</stringProp>
+                </elementProp>
+                <elementProp name="version_hash" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">0dec89a34c2545aa01edd9852cb8b98d</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">version_hash</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${Baseurl}</stringProp>
+            <stringProp name="HTTPSampler.port">443</stringProp>
+            <stringProp name="HTTPSampler.protocol">https</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">${Register}</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Think Time" enabled="true">
+            <stringProp name="ConstantTimer.delay">500</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Login" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
+          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+            <stringProp name="delimiter">,</stringProp>
+            <stringProp name="fileEncoding">UTF-8</stringProp>
+            <stringProp name="filename">./accountscreated.csv</stringProp>
+            <boolProp name="ignoreFirstLine">false</boolProp>
+            <boolProp name="quotedData">false</boolProp>
+            <boolProp name="recycle">true</boolProp>
+            <stringProp name="shareMode">shareMode.all</stringProp>
+            <boolProp name="stopThread">false</boolProp>
+            <stringProp name="variableNames">firstname,lastname,email,password</stringProp>
+          </CSVDataSet>
+          <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="login" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
@@ -133,14 +398,14 @@
                 <elementProp name="fields" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">fields</stringProp>
-                  <stringProp name="Argument.value">[{&quot;name&quot;:&quot;default_login_email&quot;,&quot;image_upload&quot;:false,&quot;value&quot;:&quot;qualybittech@gmail.com&quot;,&quot;type&quot;:&quot;email&quot;,&quot;repeater_id&quot;:&quot;&quot;,&quot;repeater_id_one&quot;:&quot;&quot;,&quot;repeater_label&quot;:&quot;&quot;,&quot;repeater_index&quot;:-1,&quot;repeater_length&quot;:0},{&quot;name&quot;:&quot;default_login_password&quot;,&quot;image_upload&quot;:false,&quot;value&quot;:&quot;qualybittech&quot;,&quot;type&quot;:&quot;password&quot;,&quot;repeater_id&quot;:&quot;&quot;,&quot;repeater_id_one&quot;:&quot;&quot;,&quot;repeater_label&quot;:&quot;&quot;,&quot;repeater_index&quot;:-1,&quot;repeater_length&quot;:0},{&quot;label&quot;:&quot;Remember Me&quot;,&quot;name&quot;:&quot;default_login_remember&quot;,&quot;image_upload&quot;:false,&quot;value&quot;:&quot;&quot;,&quot;type&quot;:&quot;checkbox&quot;,&quot;repeater_id&quot;:&quot;&quot;,&quot;repeater_id_one&quot;:&quot;&quot;,&quot;repeater_label&quot;:&quot;&quot;,&quot;repeater_index&quot;:-1,&quot;repeater_length&quot;:0}]</stringProp>
+                  <stringProp name="Argument.value">[{&quot;name&quot;:&quot;default_login_email&quot;,&quot;image_upload&quot;:false,&quot;value&quot;:&quot;${email}&quot;,&quot;type&quot;:&quot;email&quot;,&quot;repeater_id&quot;:&quot;&quot;,&quot;repeater_id_one&quot;:&quot;&quot;,&quot;repeater_label&quot;:&quot;&quot;,&quot;repeater_index&quot;:-1,&quot;repeater_length&quot;:0},{&quot;name&quot;:&quot;default_login_password&quot;,&quot;image_upload&quot;:false,&quot;value&quot;:&quot;Password123&quot;,&quot;type&quot;:&quot;password&quot;,&quot;repeater_id&quot;:&quot;&quot;,&quot;repeater_id_one&quot;:&quot;&quot;,&quot;repeater_label&quot;:&quot;&quot;,&quot;repeater_index&quot;:-1,&quot;repeater_length&quot;:0},{&quot;label&quot;:&quot;Remember Me&quot;,&quot;name&quot;:&quot;default_login_remember&quot;,&quot;image_upload&quot;:false,&quot;value&quot;:&quot;&quot;,&quot;type&quot;:&quot;checkbox&quot;,&quot;repeater_id&quot;:&quot;&quot;,&quot;repeater_id_one&quot;:&quot;&quot;,&quot;repeater_label&quot;:&quot;&quot;,&quot;repeater_index&quot;:-1,&quot;repeater_length&quot;:0}]</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="referrer" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">referrer</stringProp>
-                  <stringProp name="Argument.value">https://app.squarestack.com/login/</stringProp>
+                  <stringProp name="Argument.value">https://${Baseurl}/login/</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
@@ -175,13 +440,23 @@
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="-1277459861">register_message</stringProp>
                 <stringProp name="-776144932">redirect</stringProp>
+                <stringProp name="-1277459861">register_message</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">false</boolProp>
               <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1413384283">incorrect</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">6</intProp>
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
@@ -309,6 +584,47 @@
             <hashTree/>
           </hashTree>
         </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Appstracker" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="discover-new-apps" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${Baseurl}</stringProp>
+            <stringProp name="HTTPSampler.port">443</stringProp>
+            <stringProp name="HTTPSampler.protocol">https</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/appstracker/</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Think Time" enabled="true">
+              <stringProp name="ConstantTimer.delay">500</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="956107380">Dashboard</stringProp>
+                <stringProp name="-1180933018">My Apps</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Discover-new-apps" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
@@ -350,7 +666,7 @@
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Dashboard" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Dashboard" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
@@ -415,7 +731,7 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Load Apps" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Load Apps" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">false</boolProp>
         </TransactionController>
@@ -1292,245 +1608,6 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Transaction - Register" enabled="false">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
-        <hashTree>
-          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Generate Data and Write to CSV" enabled="true">
-            <boolProp name="resetInterpreter">false</boolProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="script">//To generate Firstname, Lastname, Email and store it in CSV File
-
-import java.util.Random;
-import org.apache.jmeter.threads.JMeterVariables;
-import org.apache.jmeter.services.FileServer;
- 
-//get path of current jmeter&apos;s script
-String projectPath = FileServer.getFileServer().getBaseDir();
- 
-// Define the characters for the random string
-String chars = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
-String emailChars = &quot;abcdefghijklmnopqrstuvwxyz1234567890&quot;;
-
-Random random = new Random();
-
-// Define the list of valid names
-String[] names = {&quot;John&quot;, &quot;Jane&quot;, &quot;Bob&quot;, &quot;Alice&quot;, &quot;Charlie&quot;, &quot;David&quot;, &quot;Eve&quot;, &quot;Frank&quot;, &quot;Grace&quot;, &quot;Helen&quot;,
-&quot;Igor&quot;, &quot;Julia&quot;, &quot;Kyle&quot;, &quot;Laura&quot;, &quot;Mike&quot;, &quot;Nina&quot;, &quot;Oscar&quot;, &quot;Paula&quot;, &quot;Quincy&quot;, &quot;Rachel&quot;, &quot;Steve&quot;, &quot;Tina&quot;, &quot;Ursula&quot;, &quot;Victor&quot;, &quot;Wendy&quot;, &quot;Xavier&quot;, &quot;Yvonne&quot;, &quot;Zack&quot;,&quot;James&quot;,&quot;Michael&quot;,&quot;Robert&quot;,&quot;John&quot;,&quot;David&quot;,&quot;William&quot;,&quot;Richard&quot;,&quot;Joseph&quot;,&quot;Thomas&quot;,&quot;Christopher&quot;,&quot;Charles&quot;,&quot;Daniel&quot;,&quot;Matthew&quot;,&quot;Anthony&quot;,&quot;Mark&quot;,&quot;Donald&quot;,&quot;Steven&quot;,&quot;Andrew&quot;,&quot;Paul&quot;,&quot;Joshua&quot;,&quot;Kenneth&quot;,&quot;Kevin&quot;,&quot;Brian&quot;,&quot;Timothy&quot;,&quot;Ronald&quot;,&quot;George&quot;,&quot;Jason&quot;,&quot;Edward&quot;,&quot;Jeffrey&quot;,&quot;Ryan&quot;,&quot;Jacob&quot;,&quot;Nicholas&quot;,&quot;Gary&quot;,&quot;Eric&quot;,&quot;Jonathan&quot;,&quot;Stephen&quot;,&quot;Larry&quot;,&quot;Justin&quot;,&quot;Scott&quot;,&quot;Brandon&quot;,&quot;Benjamin&quot;,&quot;Samuel&quot;,&quot;Gregory&quot;,&quot;Alexander&quot;,&quot;Patrick&quot;,&quot;Frank&quot;,&quot;Raymond&quot;,&quot;Jack&quot;,&quot;Dennis&quot;,&quot;Jerry&quot;,&quot;Tyler&quot;,&quot;Aaron&quot;,&quot;Jose&quot;,&quot;Adam&quot;,&quot;Nathan&quot;,&quot;Henry&quot;,&quot;Zachary&quot;,&quot;Douglas&quot;,&quot;Peter&quot;,&quot;Kyle&quot;,&quot;Noah&quot;,&quot;Ethan&quot;,&quot;Jeremy&quot;,&quot;Christian&quot;,&quot;Walter&quot;,&quot;Keith&quot;,&quot;Austin&quot;,&quot;Roger&quot;,&quot;Terry&quot;,&quot;Sean&quot;,&quot;Gerald&quot;,&quot;Carl&quot;,&quot;Dylan&quot;,&quot;Harold&quot;,&quot;Jordan&quot;,&quot;Jesse&quot;,&quot;Bryan&quot;,&quot;Lawrence&quot;,&quot;Arthur&quot;,&quot;Gabriel&quot;,&quot;Bruce&quot;,&quot;Logan&quot;,&quot;Billy&quot;,&quot;Joe&quot;,&quot;Alan&quot;,&quot;Juan&quot;,&quot;Elijah&quot;,&quot;Willie&quot;,&quot;Albert&quot;,&quot;Wayne&quot;,&quot;Randy&quot;,&quot;Mason&quot;,&quot;Vincent&quot;,&quot;Liam&quot;,&quot;Roy&quot;,&quot;Bobby&quot;,&quot;Caleb&quot;,&quot;Bradley&quot;,&quot;Russell&quot;,&quot;Lucas&quot;,&quot;Mary&quot;,&quot;Patricia&quot;,&quot;Jennifer&quot;,&quot;Linda&quot;,&quot;Elizabeth&quot;,&quot;Barbara&quot;,&quot;Susan&quot;,&quot;Jessica&quot;,&quot;Karen&quot;,&quot;Sarah&quot;,&quot;Lisa&quot;,&quot;Nancy&quot;,&quot;Sandra&quot;,&quot;Betty&quot;,&quot;Ashley&quot;,&quot;Emily&quot;,&quot;Kimberly&quot;,&quot;Margaret&quot;,&quot;Donna&quot;,&quot;Michelle&quot;,&quot;Carol&quot;,&quot;Amanda&quot;,&quot;Melissa&quot;,&quot;Deborah&quot;,&quot;Stephanie&quot;,&quot;Rebecca&quot;,&quot;Sharon&quot;,&quot;Laura&quot;,&quot;Cynthia&quot;,&quot;Dorothy&quot;,&quot;Amy&quot;,&quot;Kathleen&quot;,&quot;Angela&quot;,&quot;Shirley&quot;,&quot;Emma&quot;,&quot;Brenda&quot;,&quot;Pamela&quot;,&quot;Nicole&quot;,&quot;Anna&quot;,&quot;Samantha&quot;,&quot;Katherine&quot;,&quot;Christine&quot;,&quot;Debra&quot;,&quot;Rachel&quot;,&quot;Carolyn&quot;,&quot;Janet&quot;,&quot;Maria&quot;,&quot;Olivia&quot;,&quot;Heather&quot;,&quot;Helen&quot;,&quot;Catherine&quot;,&quot;Diane&quot;,&quot;Julie&quot;,&quot;Victoria&quot;,&quot;Joyce&quot;,&quot;Lauren&quot;,&quot;Kelly&quot;,&quot;Christina&quot;,&quot;Ruth&quot;,&quot;Joan&quot;,&quot;Virginia&quot;,&quot;Judith&quot;,&quot;Evelyn&quot;,&quot;Hannah&quot;,&quot;Andrea&quot;,&quot;Megan&quot;,&quot;Cheryl&quot;,&quot;Jacqueline&quot;,&quot;Madison&quot;,&quot;Teresa&quot;,&quot;Abigail&quot;,&quot;Sophia&quot;,&quot;Martha&quot;,&quot;Sara&quot;,&quot;Gloria&quot;,&quot;Janice&quot;,&quot;Kathryn&quot;,&quot;Ann&quot;,&quot;Isabella&quot;,&quot;Judy&quot;,&quot;Charlotte&quot;,&quot;Julia&quot;,&quot;Grace&quot;,&quot;Amber&quot;,&quot;Alice&quot;,&quot;Jean&quot;,&quot;Denise&quot;,&quot;Frances&quot;,&quot;Danielle&quot;,&quot;Marilyn&quot;,&quot;Natalie&quot;,&quot;Beverly&quot;,&quot;Diana&quot;,&quot;Brittany&quot;,&quot;Theresa&quot;,&quot;Kayla&quot;,&quot;Alexis&quot;,&quot;Doris&quot;,&quot;Lori&quot;,&quot;Tiffany&quot;};
-
-// Generate a random first name and last name from the list
-String firstName = names[random.nextInt(names.length)];
-String lastName = names[random.nextInt(names.length)];
-
-// Generate a random email
-StringBuilder email = new StringBuilder(10);
-email.append(firstName+&quot;.&quot;);
-email.append(lastName+&quot;.&quot;);
-for (int i = 0; i &lt; 10; i++) {
-    email.append(emailChars.charAt(random.nextInt(emailChars.length())));
-}
-email.append(&quot;@gmail.com&quot;);
-
-// Print the generated names and email
-log.info(&quot;First Name: &quot; + firstName.toString());
-log.info(&quot;Last Name: &quot; + lastName.toString());
-log.info(&quot;Email: &quot; + email.toString());
-
-// Store values in the variables
-vars.put(&quot;FirstName&quot;, firstName.toString());
-vars.put(&quot;LastName&quot;, lastName.toString());
-vars.put(&quot;Email&quot;, email.toString());
-vars.put(&quot;Password&quot;, &quot;Password123&quot;);
-
-
-FileWriter f = new FileWriter(projectPath+&quot;./accountscreated.csv&quot;,true);
-BufferedWriter out = new BufferedWriter(f);
-out.write(vars.get(&quot;FirstName&quot;)+&quot;,&quot;+vars.get(&quot;LastName&quot;)+&quot;,&quot;+vars.get(&quot;Email&quot;)+&quot;,&quot;+vars.get(&quot;Password&quot;)+ &quot;\n&quot;);
-out.close();
-f.close();</stringProp>
-          </BeanShellPreProcessor>
-          <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="channelpartner/par" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="input_1.3" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${FirstName}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_1.3</stringProp>
-                </elementProp>
-                <elementProp name="input_2.6" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${LastName}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_2.6</stringProp>
-                </elementProp>
-                <elementProp name="input_3" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${Email}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_3</stringProp>
-                </elementProp>
-                <elementProp name="input_4" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${Password}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_4</stringProp>
-                </elementProp>
-                <elementProp name="input_4_2" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${Password}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_4_2</stringProp>
-                </elementProp>
-                <elementProp name="input_9" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">62711</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_9</stringProp>
-                </elementProp>
-                <elementProp name="gform_ajax" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">form_id=21&amp;title=&amp;description=yes&amp;tabindex=0</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">gform_ajax</stringProp>
-                </elementProp>
-                <elementProp name="is_submit_21" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">is_submit_21</stringProp>
-                </elementProp>
-                <elementProp name="gform_submit" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">21</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">gform_submit</stringProp>
-                </elementProp>
-                <elementProp name="gform_unique_id" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">gform_unique_id</stringProp>
-                </elementProp>
-                <elementProp name="state_21" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">WyJbXSIsIjRiMDk4ZjFmZTYyMmIwNTdlNzc1ZWM0MzBiZGEzOGVjIl0=</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">state_21</stringProp>
-                </elementProp>
-                <elementProp name="gform_target_page_number_21" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">0</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">gform_target_page_number_21</stringProp>
-                </elementProp>
-                <elementProp name="gform_source_page_number_21" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">gform_source_page_number_21</stringProp>
-                </elementProp>
-                <elementProp name="gform_field_values" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">gform_field_values</stringProp>
-                </elementProp>
-                <elementProp name="input_17" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_17</stringProp>
-                </elementProp>
-                <elementProp name="input_18" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_18</stringProp>
-                </elementProp>
-                <elementProp name="input_19" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_19</stringProp>
-                </elementProp>
-                <elementProp name="input_20" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_20</stringProp>
-                </elementProp>
-                <elementProp name="input_21" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_21</stringProp>
-                </elementProp>
-                <elementProp name="input_22" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_22</stringProp>
-                </elementProp>
-                <elementProp name="input_24" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">62711</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_24</stringProp>
-                </elementProp>
-                <elementProp name="input_25" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value"></stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">input_25</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain">${Baseurl}</stringProp>
-            <stringProp name="HTTPSampler.port">443</stringProp>
-            <stringProp name="HTTPSampler.protocol">https</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/channelpartner/par</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree/>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Think Time" enabled="true">
-            <stringProp name="ConstantTimer.delay">500</stringProp>
-          </ConstantTimer>
-          <hashTree/>
-        </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
@@ -1575,9 +1652,34 @@ f.close();</stringProp>
               <stringProp name="Argument.value">app.squarestack.com</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="Register" elementType="Argument">
+              <stringProp name="Argument.name">Register</stringProp>
+              <stringProp name="Argument.value">/channelpartner/par</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
             <elementProp name="Baseurl2" elementType="Argument">
               <stringProp name="Argument.name">Baseurl2</stringProp>
               <stringProp name="Argument.value">schedule.squarestack.com</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="Baseurl_staging" elementType="Argument">
+              <stringProp name="Argument.name">Baseurl_staging</stringProp>
+              <stringProp name="Argument.value">staging.squarestack.com</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="Baseurl_prod" elementType="Argument">
+              <stringProp name="Argument.name">Baseurl_prod</stringProp>
+              <stringProp name="Argument.value">app.squarestack.com</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="Register_prod" elementType="Argument">
+              <stringProp name="Argument.name">Register_prod</stringProp>
+              <stringProp name="Argument.value">/channelpartner/par</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="Register_staging" elementType="Argument">
+              <stringProp name="Argument.name">Register_staging</stringProp>
+              <stringProp name="Argument.value">/register</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -1684,7 +1786,8 @@ f.close();</stringProp>
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename"></stringProp>
+          <stringProp name="filename">20usertest.csv</stringProp>
+          <boolProp name="useGroupName">true</boolProp>
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="StatGraphVisualizer" testclass="ResultCollector" testname="Aggregate Graph" enabled="true">
@@ -1721,7 +1824,7 @@ f.close();</stringProp>
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename"></stringProp>
+          <stringProp name="filename">20usertest.csv</stringProp>
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
@@ -1762,6 +1865,12 @@ f.close();</stringProp>
         </ResultCollector>
         <hashTree/>
         <Summariser guiclass="SummariserGui" testclass="Summariser" testname="Generate Summary Results" enabled="true"/>
+        <hashTree/>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
         <hashTree/>
       </hashTree>
     </hashTree>

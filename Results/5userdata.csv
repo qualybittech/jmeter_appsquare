@@ -1,0 +1,22 @@
+Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
+Thread Group:Transaction - Register,10,7125,7127,7700,7700,7702,6214,7702,0.000%,.09334,2.43,0.20
+Thread Group:Transaction - Login,10,16297,16245,17467,17467,17572,14186,17572,100.000%,.08627,7.09,0.74
+Thread Group:Transaction - Welcome,5,9426,9460,9709,10721,10721,8471,10721,0.000%,.43089,29.42,1.82
+Thread Group:Transaction - Analytics,5,6057,5849,6221,6857,6857,5665,6857,0.000%,.54561,36.54,1.21
+Thread Group:Transaction - Appstracker,5,5090,5386,5505,5552,5552,4198,5552,0.000%,.64969,45.87,1.41
+Thread Group:Transaction - Discover-new-apps,5,4772,4972,5035,5115,5115,4126,5115,0.000%,.68890,50.00,1.50
+Thread Group:Transaction - Dashboard,5,10144,9642,10010,11907,11907,9559,11907,0.000%,.35927,26.56,1.69
+Thread Group:admin-ajax/disable_walkthrough_session,5,3294,3342,3424,4119,4119,2771,4119,0.000%,.81566,0.49,2.08
+Thread Group:admin-ajax/pafe_ajax_form_builder,5,3818,3735,3836,4210,4210,3609,4210,0.000%,.80645,0.57,2.74
+Thread Group:Home,5,9393,9474,9501,9567,9567,9026,9567,0.000%,.43546,34.01,1.87
+Thread Group:admin-ajax/load_BrandRssFeed_modal,5,2555,2548,2717,2900,2900,2239,2900,0.000%,1.12108,0.70,2.83
+Thread Group:admin-ajax/load_GlobalRssFeed_modal,5,2984,3019,3169,3223,3223,2728,3223,0.000%,1.04471,2.28,2.64
+Thread Group:get_refreshed_fragments&elementor_page_id=195,5,2571,2446,2691,3604,3604,1847,3604,0.000%,.89142,1.97,2.04
+Thread Group:schedule.squarestack/portal-embed,5,929,916,939,1013,1013,877,1013,0.000%,1.17980,7.49,1.00
+Thread Group:WEB_CUSTOMER_BOOKING_SETTING/viewrecords,15,312,302,345,355,374,282,374,0.000%,1.92604,2.01,2.64
+Thread Group:WEB_CUSTOMER_STAFF_VIEW/viewrecords,5,318,303,321,376,376,290,376,0.000%,1.36799,1.42,1.74
+Thread Group:WEB_BOOKING_IMAGE/viewrecords,5,315,312,312,362,362,286,362,0.000%,1.35870,1.42,1.72
+Thread Group:WEB_CUSTOMER_SERVICE/viewrecords,5,331,321,361,379,379,282,379,0.000%,1.35943,1.42,1.78
+Thread Group:Transaction - Load Apps,5,27447,27196,28241,28688,28688,26441,28688,0.000%,.13094,12.71,3.46
+Thread Group:Debug Sampler,5,0,0,0,0,0,0,0,0.000%,1.52858,1.04,0.00
+TOTAL,120,5717,3609,15936,17467,28241,0,28688,8.333%,.97574,31.04,3.64
